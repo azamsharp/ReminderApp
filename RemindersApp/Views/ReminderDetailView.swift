@@ -7,57 +7,76 @@
 
 import SwiftUI
 
+
+
 struct ReminderDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @State private var title: String = ""
-    @State private var notes: String = ""
-    @State private var hasDate: Bool = false
-    @State private var hasTime: Bool = false
+    let reminder: Reminder
+    @State var editConfig: ReminderEditConfig
+    
+    init(reminder: Reminder, editConfig: ReminderEditConfig = ReminderEditConfig()) {
+        self.reminder = reminder
+        self._editConfig = State(wrappedValue: editConfig)
+    }
     
     private var isFormValid: Bool {
-        !title.isEmpty
+        !editConfig.title.isEmpty
     }
     
     var body: some View {
-        VStack {
-            List {
-                Section {
-                    TextField("Reminder Name", text: $title)
-                    TextField("Notes", text: $notes)
-                }
-                Section {
-                    Toggle(isOn: $hasDate) {
-                        Image(systemName: "calendar")
-                            .foregroundColor(.red)
+        NavigationView {
+            VStack {
+                List {
+                    Section {
+                        TextField("Title", text: $editConfig.title)
+                        TextField("Notes", text: $editConfig.notes)
                     }
-                    
-                    Toggle(isOn: $hasTime) {
-                        Image(systemName: "clock")
-                            .foregroundColor(.blue)
-                    }
-                }
-            }.listStyle(.insetGrouped)
-            
-        }.toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Details")
-            }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Done") {
-                    if isFormValid {
+                    Section {
+                        Toggle(isOn: $editConfig.hasDate) {
+                            Image(systemName: "calendar")
+                                .foregroundColor(.red)
+                        }
+                        
+                        if editConfig.hasDate {
+                           // DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .date)
+                        }
+                        
+                        Toggle(isOn: $editConfig.hasTime) {
+                            Image(systemName: "clock")
+                                .foregroundColor(.blue)
+                        }
+                        
+                        if editConfig.hasTime {
+                          //  DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .hourAndMinute)
+                        }
+                        
                         
                     }
-                }.disabled(!isFormValid)
+                }.listStyle(.insetGrouped)
+                
             }
-            
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
-                    dismiss()
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Details")
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        if isFormValid {
+                            // save the new reminder 
+                        }
+                    }.disabled(!isFormValid)
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
             }
+            
         }
     }
 }
@@ -65,7 +84,7 @@ struct ReminderDetailView: View {
 struct ReminderDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ReminderDetailView()
+            ReminderDetailView(reminder: PreviewData.reminder, editConfig: ReminderEditConfig())
                 .environment(\.colorScheme, .dark)
         }
     }
