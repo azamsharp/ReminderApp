@@ -67,7 +67,7 @@ struct ReminderDetailView: View {
                         if isFormValid {
                             // save the new reminder
                             do {
-                                try ReminderService.updateReminder(currentReminder: reminder, editConfig: editConfig)
+                                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
                                 dismiss() 
                             } catch {
                                 print(error)

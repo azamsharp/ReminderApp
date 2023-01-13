@@ -26,7 +26,7 @@ struct ReminderCellView: View {
                 }
             VStack(alignment: .leading) {
                 Text(reminder.title ?? "")
-                if let notes = reminder.notes {
+                if let notes = reminder.notes, !notes.isEmpty {
                     Text(notes)
                         .opacity(0.4)
                         .font(.caption)

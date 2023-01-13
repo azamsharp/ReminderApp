@@ -15,13 +15,15 @@ class ReminderService {
         try CoreDataProvider.shared.viewContext.save()
     }
     
-    static func updateReminder(currentReminder: Reminder, editConfig: ReminderEditConfig) throws {
+    static func updateReminder(reminder: Reminder, editConfig: ReminderEditConfig) throws {
         
-        // if any validation or business rules then you can run here.
-        let reminderToUpdate = currentReminder
+        // EXECUTE ANY BUSINESS RULES IF NECESSARY. CURRENTLY NO DOMAIN RULES 
+        // editConfig contains all the edited values for the reminder. These values are populated through binding of TextFields, DatePicker etc.
+        
+        let reminderToUpdate = reminder
         reminderToUpdate.isCompleted = editConfig.isCompleted
         reminderToUpdate.title = editConfig.title
-        reminderToUpdate.notes = editConfig.notes 
+        reminderToUpdate.notes = editConfig.notes
         reminderToUpdate.reminderDate = editConfig.reminderDate
         reminderToUpdate.reminderTime = editConfig.reminderTime
         

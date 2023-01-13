@@ -33,8 +33,9 @@ struct ReminderListView: View {
         
         var editConfig = ReminderEditConfig(reminder: reminder)
         editConfig.isCompleted = !reminder.isCompleted
+        
         do {
-            try ReminderService.updateReminder(currentReminder: reminder, editConfig: editConfig)
+            try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
         } catch {
             print(error.localizedDescription)
         }
