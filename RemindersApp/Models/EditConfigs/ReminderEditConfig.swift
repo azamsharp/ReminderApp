@@ -24,5 +24,7 @@ struct ReminderEditConfig {
         isCompleted = reminder.isCompleted
         reminderDate = reminder.reminderDate
         reminderTime = reminder.reminderTime
+        hasDate = reminder.reminderDate != nil
+        hasTime = reminder.reminderTime != nil 
     }
 }

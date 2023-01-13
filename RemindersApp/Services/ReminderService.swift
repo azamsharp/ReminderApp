@@ -11,8 +11,12 @@ import UIKit
 
 class ReminderService {
     
+    static var viewContext: NSManagedObjectContext {
+        CoreDataProvider.shared.viewContext
+    }
+    
     static func save() throws {
-        try CoreDataProvider.shared.viewContext.save()
+        try viewContext.save()
     }
     
     static func updateReminder(reminder: Reminder, editConfig: ReminderEditConfig) throws {
@@ -30,13 +34,18 @@ class ReminderService {
         try save()
     }
     
+    static func deleteReminder(reminder: Reminder) throws {
+        viewContext.delete(reminder)
+        try save()
+    }
+    
     static func deleteReminder(_ reminder: Reminder) throws {
         CoreDataProvider.shared.viewContext.delete(reminder)
         try save()
     }
     
     static func saveMyList(_ name: String, _ color: UIColor) throws {
-        let myList = MyList(context: CoreDataProvider.shared.viewContext)
+        let myList = MyList(context: viewContext)
         myList.name = name
         myList.color = color
         try save()
@@ -44,7 +53,7 @@ class ReminderService {
     
     static func saveReminderToMyList(myList: MyList, reminderTitle: String) throws {
         
-        let reminder = Reminder(context: CoreDataProvider.shared.viewContext)
+        let reminder = Reminder(context: viewContext)
         reminder.title = reminderTitle
         myList.addToReminders(reminder)
         try save()

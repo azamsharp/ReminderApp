@@ -53,6 +53,7 @@ struct MyListsView: View {
                 NavigationView {
                     AddNewListView { name, color in
                         do {
+                            
                             try ReminderService.saveMyList(name, color)
                         } catch  {
                             print(error.localizedDescription)

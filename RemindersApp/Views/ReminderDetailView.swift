@@ -14,7 +14,7 @@ struct ReminderDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     let reminder: Reminder
-    @State var editConfig: ReminderEditConfig
+    @State var editConfig: ReminderEditConfig 
     
     init(reminder: Reminder, editConfig: ReminderEditConfig = ReminderEditConfig()) {
         self.reminder = reminder
@@ -30,7 +30,7 @@ struct ReminderDetailView: View {
             VStack {
                 List {
                     Section {
-                        TextField("Title", text: $editConfig.title)
+                        TextField("Title", text: $editConfig.title) // Changing the config 
                         TextField("Notes", text: $editConfig.notes ?? "")
                     }
                     Section {

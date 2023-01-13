@@ -31,6 +31,12 @@ struct ReminderCellView: View {
                         .opacity(0.4)
                         .font(.caption)
                 }
+                
+                if let reminderDate = reminder.reminderDate {
+                    Text(reminderDate.formatted(date: .numeric, time: .omitted))
+                        .font(.caption)
+                }
+                
             }
             Spacer()
             Image(systemName: "info.circle.fill")
@@ -38,7 +44,9 @@ struct ReminderCellView: View {
                 .onTapGesture {
                     showReminderDetail = true
                 }
-        }.onTapGesture {
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
             onReminderSelect(reminder)
         }
     }

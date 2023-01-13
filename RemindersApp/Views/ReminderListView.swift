@@ -44,6 +44,11 @@ struct ReminderListView: View {
     private func deleteReminder(_ indexSet: IndexSet) {
         indexSet.forEach { index in
             let reminder = reminders[index]
+            do {
+                try ReminderService.deleteReminder(reminder)
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -55,6 +60,7 @@ struct ReminderListView: View {
                         selectedReminder = reminder
                     }, onReminderCheckedChanged: reminderCheckedChanged, isSelected: selectedReminder?.objectID == reminder.objectID, showReminderDetail: $showReminderDetail)
                 }.onDelete(perform: deleteReminder)
+                   
             }
                 
                 Spacer()
