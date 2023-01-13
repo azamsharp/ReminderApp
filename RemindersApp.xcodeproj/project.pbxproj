@@ -16,6 +16,8 @@
 		8D39FB0B296C8E8C00A0CA34 /* MyList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D39FB0A296C8E8C00A0CA34 /* MyList+CoreDataClass.swift */; };
 		8D39FB0D296C8E9C00A0CA34 /* MyList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D39FB0C296C8E9C00A0CA34 /* MyList+CoreDataProperties.swift */; };
 		8D3FEEA5297130F4001AE138 /* ReminderEditConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3FEEA4297130F4001AE138 /* ReminderEditConfig.swift */; };
+		8D3FEEA829718F87001AE138 /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3FEEA729718F87001AE138 /* CustomOperators.swift */; };
+		8D3FEEAA29719BB7001AE138 /* ReminderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3FEEA929719BB7001AE138 /* ReminderCellView.swift */; };
 		8D4F05EC296D0C21009A0209 /* ReminderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4F05EB296D0C21009A0209 /* ReminderListView.swift */; };
 		8DA26F6B296BBA2F007DE5DC /* AddNewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA26F6A296BBA2F007DE5DC /* AddNewListView.swift */; };
 		8DD166EF296BAD99004FE59C /* RemindersAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD166EE296BAD99004FE59C /* RemindersAppApp.swift */; };
@@ -37,6 +39,8 @@
 		8D39FB0A296C8E8C00A0CA34 /* MyList+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyList+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8D39FB0C296C8E9C00A0CA34 /* MyList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyList+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8D3FEEA4297130F4001AE138 /* ReminderEditConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderEditConfig.swift; sourceTree = "<group>"; };
+		8D3FEEA729718F87001AE138 /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
+		8D3FEEA929719BB7001AE138 /* ReminderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellView.swift; sourceTree = "<group>"; };
 		8D4F05EB296D0C21009A0209 /* ReminderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListView.swift; sourceTree = "<group>"; };
 		8DA26F6A296BBA2F007DE5DC /* AddNewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewListView.swift; sourceTree = "<group>"; };
 		8DD166EB296BAD99004FE59C /* RemindersApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RemindersApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +81,7 @@
 				8DD910F6296CA13D00686F1A /* MyListCellView.swift */,
 				8D4F05EB296D0C21009A0209 /* ReminderListView.swift */,
 				8D34B188296E72CE00007BD3 /* ReminderDetailView.swift */,
+				8D3FEEA929719BB7001AE138 /* ReminderCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -123,6 +128,14 @@
 			path = EditConfigs;
 			sourceTree = "<group>";
 		};
+		8D3FEEA629718F6E001AE138 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				8D3FEEA729718F87001AE138 /* CustomOperators.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		8DD166E2296BAD99004FE59C = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +155,7 @@
 		8DD166ED296BAD99004FE59C /* RemindersApp */ = {
 			isa = PBXGroup;
 			children = (
+				8D3FEEA629718F6E001AE138 /* Utils */,
 				8D39FB09296C8E7800A0CA34 /* Models */,
 				8D39FB06296C89AE00A0CA34 /* Transformers */,
 				8D39FB03296C79D800A0CA34 /* Services */,
@@ -240,10 +254,12 @@
 				8D39FB0D296C8E9C00A0CA34 /* MyList+CoreDataProperties.swift in Sources */,
 				8DD166F1296BAD99004FE59C /* MyListsView.swift in Sources */,
 				8DD910F9296CA1EB00686F1A /* PreviewData.swift in Sources */,
+				8D3FEEA829718F87001AE138 /* CustomOperators.swift in Sources */,
 				8D3FEEA5297130F4001AE138 /* ReminderEditConfig.swift in Sources */,
 				344CE452296BCA160032812D /* ColorPickerView.swift in Sources */,
 				8D39FB08296C89BD00A0CA34 /* UIColorTransformer.swift in Sources */,
 				8D34B189296E72CE00007BD3 /* ReminderDetailView.swift in Sources */,
+				8D3FEEAA29719BB7001AE138 /* ReminderCellView.swift in Sources */,
 				8DA26F6B296BBA2F007DE5DC /* AddNewListView.swift in Sources */,
 				8D39FB02296C68D000A0CA34 /* CoreDataProvider.swift in Sources */,
 				8D39FB0B296C8E8C00A0CA34 /* MyList+CoreDataClass.swift in Sources */,

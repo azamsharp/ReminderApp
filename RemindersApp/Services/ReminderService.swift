@@ -16,8 +16,20 @@ class ReminderService {
     }
     
     static func updateReminder(currentReminder: Reminder, editConfig: ReminderEditConfig) throws {
+        
+        // if any validation or business rules then you can run here.
         let reminderToUpdate = currentReminder
         reminderToUpdate.isCompleted = editConfig.isCompleted
+        reminderToUpdate.title = editConfig.title
+        reminderToUpdate.notes = editConfig.notes 
+        reminderToUpdate.reminderDate = editConfig.reminderDate
+        reminderToUpdate.reminderTime = editConfig.reminderTime
+        
+        try save()
+    }
+    
+    static func deleteReminder(_ reminder: Reminder) throws {
+        CoreDataProvider.shared.viewContext.delete(reminder)
         try save()
     }
     

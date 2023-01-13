@@ -31,7 +31,7 @@ struct ReminderDetailView: View {
                 List {
                     Section {
                         TextField("Title", text: $editConfig.title)
-                        TextField("Notes", text: $editConfig.notes)
+                        TextField("Notes", text: $editConfig.notes ?? "")
                     }
                     Section {
                         Toggle(isOn: $editConfig.hasDate) {
@@ -40,7 +40,7 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasDate {
-                           // DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .date)
+                            DatePicker("Select Date", selection: $editConfig.reminderDate ?? Date(), displayedComponents: .date)
                         }
                         
                         Toggle(isOn: $editConfig.hasTime) {
@@ -49,7 +49,7 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasTime {
-                          //  DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .hourAndMinute)
+                            DatePicker("Select Date", selection: $editConfig.reminderTime ?? Date(), displayedComponents: .hourAndMinute)
                         }
                         
                         
@@ -65,7 +65,13 @@ struct ReminderDetailView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         if isFormValid {
-                            // save the new reminder 
+                            // save the new reminder
+                            do {
+                                try ReminderService.updateReminder(currentReminder: reminder, editConfig: editConfig)
+                                dismiss() 
+                            } catch {
+                                print(error)
+                            }
                         }
                     }.disabled(!isFormValid)
                 }
