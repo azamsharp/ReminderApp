@@ -28,8 +28,8 @@ class ReminderService {
         reminderToUpdate.isCompleted = editConfig.isCompleted
         reminderToUpdate.title = editConfig.title
         reminderToUpdate.notes = editConfig.notes
-        reminderToUpdate.reminderDate = editConfig.reminderDate
-        reminderToUpdate.reminderTime = editConfig.reminderTime
+        reminderToUpdate.reminderDate = editConfig.hasDate ? editConfig.reminderDate: nil
+        reminderToUpdate.reminderTime = editConfig.hasTime ? editConfig.reminderTime: nil 
         
         try save()
     }

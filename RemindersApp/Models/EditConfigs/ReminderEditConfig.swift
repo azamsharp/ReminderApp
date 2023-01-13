@@ -13,8 +13,8 @@ struct ReminderEditConfig {
     var isCompleted: Bool = false
     var hasDate: Bool = false
     var hasTime: Bool = false
-    var reminderDate: Date?
-    var reminderTime: Date?
+    var reminderDate: Date = Date()
+    var reminderTime: Date = Date()
     
     init() { }
     
@@ -22,9 +22,9 @@ struct ReminderEditConfig {
         title = reminder.title ?? ""
         notes = reminder.notes
         isCompleted = reminder.isCompleted
-        reminderDate = reminder.reminderDate
-        reminderTime = reminder.reminderTime
+        reminderDate = reminder.reminderDate ?? Date()
+        reminderTime = reminder.reminderTime ?? Date()
         hasDate = reminder.reminderDate != nil
-        hasTime = reminder.reminderTime != nil 
+        hasTime = reminder.reminderTime != nil
     }
 }

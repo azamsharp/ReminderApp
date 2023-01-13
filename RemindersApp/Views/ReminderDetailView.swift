@@ -40,7 +40,7 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasDate {
-                            DatePicker("Select Date", selection: $editConfig.reminderDate ?? Date(), displayedComponents: .date)
+                            DatePicker("Select Date", selection: $editConfig.reminderDate, displayedComponents: .date)
                         }
                         
                         Toggle(isOn: $editConfig.hasTime) {
@@ -49,10 +49,8 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasTime {
-                            DatePicker("Select Date", selection: $editConfig.reminderTime ?? Date(), displayedComponents: .hourAndMinute)
+                            DatePicker("Select Date", selection: $editConfig.reminderTime, displayedComponents: .hourAndMinute)
                         }
-                        
-                        
                     }
                 }.listStyle(.insetGrouped)
                 

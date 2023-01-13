@@ -17,13 +17,14 @@ struct ReminderCellView: View {
     @Binding var showReminderDetail: Bool
     
     var body: some View {
-        HStack(alignment: .center) {
+        HStack {
             Image(systemName: reminder.isCompleted ? "circle.inset.filled": "circle")
                 .font(.title2)
                 .opacity(0.4)
                 .onTapGesture {
                     onReminderCheckedChanged(reminder)
-                }
+                }.padding(.trailing, 10)
+            
             VStack(alignment: .leading) {
                 Text(reminder.title ?? "")
                 if let notes = reminder.notes, !notes.isEmpty {
@@ -32,10 +33,18 @@ struct ReminderCellView: View {
                         .font(.caption)
                 }
                 
-                if let reminderDate = reminder.reminderDate {
-                    Text(reminderDate.formatted(date: .numeric, time: .omitted))
-                        .font(.caption)
-                }
+                HStack {
+                    if let reminderDate = reminder.reminderDate {
+                        Text(reminderDate.formatted(date: .numeric, time: .omitted))
+                    }
+                    
+                    if let reminderTime = reminder.reminderTime {
+                        Text(reminderTime.formatted(date: .omitted, time: .shortened))
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                .font(.caption)
+                .opacity(0.4)
+                    
                 
             }
             Spacer()
