@@ -13,13 +13,8 @@ struct ReminderDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    var reminder: Binding<Reminder>
-    @State var editConfig: ReminderEditConfig 
-    
-    init(reminder: Binding<Reminder>, editConfig: ReminderEditConfig = ReminderEditConfig()) {
-        self.reminder = reminder
-        self._editConfig = State(wrappedValue: editConfig)
-    }
+    @Binding var reminder: Reminder
+    @State var editConfig: ReminderEditConfig = ReminderEditConfig()
     
     private var isFormValid: Bool {
         !editConfig.title.isEmpty
@@ -55,12 +50,12 @@ struct ReminderDetailView: View {
                     
                     Section {
                         NavigationLink {
-                            SelectListView(selectedList: reminder.list)
+                            SelectListView(selectedList: $reminder.list)
                         } label: {
                             HStack {
                                 Text("List")
                                 Spacer()
-                                Text(reminder.wrappedValue.list!.name)
+                                Text(reminder.list!.name)
                             }
                         }
 
@@ -68,6 +63,9 @@ struct ReminderDetailView: View {
                     
                 }.listStyle(.insetGrouped)
                 
+            }
+            .onAppear {
+                editConfig = ReminderEditConfig(reminder: reminder)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -79,7 +77,7 @@ struct ReminderDetailView: View {
                         if isFormValid {
                             // save the new reminder
                             do {
-                                try ReminderService.updateReminder(reminder: reminder.wrappedValue, editConfig: editConfig)
+                                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
                                 dismiss() 
                             } catch {
                                 print(error)
@@ -102,7 +100,7 @@ struct ReminderDetailView: View {
 struct ReminderDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ReminderDetailView(reminder: .constant(PreviewData.reminder), editConfig: ReminderEditConfig())
+            ReminderDetailView(reminder: .constant(PreviewData.reminder))
                 .environment(\.colorScheme, .dark)
         }
     }
