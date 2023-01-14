@@ -16,7 +16,7 @@ public class MyList: NSManagedObject {
     lazy var remindersByMyListRequest: NSFetchRequest<Reminder> = {
         let request = Reminder.fetchRequest()
         request.sortDescriptors = []
-        request.predicate = NSPredicate(format: "list = %@", self)
+        request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", self)
         return request
     }()
     

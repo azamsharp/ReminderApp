@@ -9,20 +9,22 @@ import Foundation
 
 struct ReminderEditConfig {
     var title: String = ""
-    var notes: String = ""
+    var notes: String?
     var isCompleted: Bool = false
     var hasDate: Bool = false
     var hasTime: Bool = false
-    var selectedDate: Date?
-    var selectedTime: Date?
+    var reminderDate: Date = Date()
+    var reminderTime: Date = Date()
     
     init() { }
     
     init(reminder: Reminder) {
         title = reminder.title ?? ""
-        notes = reminder.notes ?? ""
+        notes = reminder.notes
         isCompleted = reminder.isCompleted
-        selectedDate = reminder.reminderDate
-        selectedTime = reminder.reminderTime
+        reminderDate = reminder.reminderDate ?? Date()
+        reminderTime = reminder.reminderTime ?? Date()
+        hasDate = reminder.reminderDate != nil
+        hasTime = reminder.reminderTime != nil
     }
 }

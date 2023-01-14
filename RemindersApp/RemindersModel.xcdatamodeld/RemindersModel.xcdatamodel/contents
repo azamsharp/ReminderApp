@@ -11,6 +11,6 @@
         <attribute name="reminderDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="reminderTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MyList" inverseName="reminders" inverseEntity="MyList"/>
+        <relationship name="list" maxCount="1" deletionRule="Nullify" destinationEntity="MyList" inverseName="reminders" inverseEntity="MyList"/>
     </entity>
 </model>

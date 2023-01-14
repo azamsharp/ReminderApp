@@ -13,13 +13,8 @@ struct ReminderDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let reminder: Reminder
-    @State var editConfig: ReminderEditConfig
-    
-    init(reminder: Reminder, editConfig: ReminderEditConfig = ReminderEditConfig()) {
-        self.reminder = reminder
-        self._editConfig = State(wrappedValue: editConfig)
-    }
+    @Binding var reminder: Reminder
+    @State var editConfig: ReminderEditConfig = ReminderEditConfig()
     
     private var isFormValid: Bool {
         !editConfig.title.isEmpty
@@ -30,8 +25,8 @@ struct ReminderDetailView: View {
             VStack {
                 List {
                     Section {
-                        TextField("Title", text: $editConfig.title)
-                        TextField("Notes", text: $editConfig.notes)
+                        TextField("Title", text: $editConfig.title) // Changing the config 
+                        TextField("Notes", text: $editConfig.notes ?? "")
                     }
                     Section {
                         Toggle(isOn: $editConfig.hasDate) {
@@ -40,7 +35,7 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasDate {
-                           // DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .date)
+                            DatePicker("Select Date", selection: $editConfig.reminderDate, displayedComponents: .date)
                         }
                         
                         Toggle(isOn: $editConfig.hasTime) {
@@ -49,13 +44,28 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasTime {
-                          //  DatePicker("Select Date", selection: $editConfig.selectedDate, displayedComponents: .hourAndMinute)
+                            DatePicker("Select Date", selection: $editConfig.reminderTime, displayedComponents: .hourAndMinute)
                         }
-                        
-                        
                     }
+                    
+                    Section {
+                        NavigationLink {
+                            SelectListView(selectedList: $reminder.list)
+                        } label: {
+                            HStack {
+                                Text("List")
+                                Spacer()
+                                Text(reminder.list!.name)
+                            }
+                        }
+
+                    }
+                    
                 }.listStyle(.insetGrouped)
                 
+            }
+            .onAppear {
+                editConfig = ReminderEditConfig(reminder: reminder)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -65,7 +75,13 @@ struct ReminderDetailView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         if isFormValid {
-                            // save the new reminder 
+                            // save the new reminder
+                            do {
+                                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                                dismiss() 
+                            } catch {
+                                print(error)
+                            }
                         }
                     }.disabled(!isFormValid)
                 }
@@ -84,7 +100,7 @@ struct ReminderDetailView: View {
 struct ReminderDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ReminderDetailView(reminder: PreviewData.reminder, editConfig: ReminderEditConfig())
+            ReminderDetailView(reminder: .constant(PreviewData.reminder))
                 .environment(\.colorScheme, .dark)
         }
     }

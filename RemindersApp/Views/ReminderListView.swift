@@ -16,6 +16,8 @@ struct ReminderListView: View {
     @State private var selectedReminder: Reminder?
     @State private var showReminderDetail: Bool = false
     
+    @State var delayCall: DispatchWorkItem?
+    
     @FetchRequest
     private var reminders: FetchedResults<Reminder>
     
@@ -29,34 +31,65 @@ struct ReminderListView: View {
         !title.isEmpty
     }
     
+    private func delayCall(delay: Double, completion: @escaping () -> ()) {
+        
+        // cancel any existing call
+        delayCall?.cancel()
+        
+        delayCall = DispatchWorkItem {
+            completion()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: delayCall!)
+        
+    }
+    
+    private func reminderCheckedChanged(reminder: Reminder) {
+        
+        var editConfig = ReminderEditConfig(reminder: reminder)
+        editConfig.isCompleted = !reminder.isCompleted
+        
+        
+        do {
+            try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+        } catch {}
+        
+    }
+    
+    
+    private func deleteReminder(_ indexSet: IndexSet) {
+        indexSet.forEach { index in
+            let reminder = reminders[index]
+            do {
+                try ReminderService.deleteReminder(reminder)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    private func isReminderSelected(_ reminder: Reminder) -> Bool {
+        selectedReminder?.objectID == reminder.objectID
+    }
+    
     var body: some View {
         VStack {
-            
-            List(reminders) { reminder in
-                HStack {
-                    Image(systemName: reminder.isCompleted ? "circle.inset.filled": "circle")
-                        .font(.title2)
-                        .opacity(0.4)
-                        .onTapGesture {
-                            var editConfig = ReminderEditConfig(reminder: reminder)
-                            editConfig.isCompleted = !reminder.isCompleted
-                            //let editConfig = ReminderEditConfig(isCompleted: !reminder.isCompleted)
-                            do {
-                                try ReminderService.updateReminder(currentReminder: reminder, editConfig: editConfig)
-                            } catch {
-                                print(error.localizedDescription)
-                            }
+            List {
+                ForEach(reminders) { reminder in
+                    
+                    ReminderCellView(reminder: reminder, isSelected: isReminderSelected(reminder)) { event in
+                        switch event {
+                            case .showDetail(let reminder):
+                                selectedReminder = reminder
+                            case .checkedChanged(let reminder):
+                                reminderCheckedChanged(reminder: reminder)
+                            case .select:
+                                showReminderDetail = true
                         }
-                    Text(reminder.title ?? "")
-                    Spacer()
-                    Image(systemName: "info.circle.fill")
-                        .opacity(selectedReminder?.objectID == reminder.objectID ? 1.0: 0.0)
-                        .onTapGesture {
-                            showReminderDetail = true
-                        }
-                }.onTapGesture {
-                    selectedReminder = reminder
-                }
+                    }
+                    
+                }.onDelete(perform: deleteReminder)
+                
             }
             
             Spacer()
@@ -70,11 +103,11 @@ struct ReminderListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
         }
+        
         .sheet(isPresented: $showReminderDetail, content: {
-            if let reminder = selectedReminder {
-                ReminderDetailView(reminder: reminder, editConfig: ReminderEditConfig(reminder: reminder))
-            }
+            ReminderDetailView(reminder: Binding($selectedReminder)!)
         })
+        
         .toolbar(content: {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Done") {
