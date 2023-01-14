@@ -49,12 +49,13 @@ struct ReminderListView: View {
         var editConfig = ReminderEditConfig(reminder: reminder)
         editConfig.isCompleted = !reminder.isCompleted
         
-        delayCall(delay: 2.0) {
-            do {
-                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
-            } catch {}
-        }
+        
+        do {
+            try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+        } catch {}
+        
     }
+    
     
     private func deleteReminder(_ indexSet: IndexSet) {
         indexSet.forEach { index in

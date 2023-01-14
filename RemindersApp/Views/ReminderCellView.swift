@@ -19,8 +19,11 @@ struct ReminderCellView: View {
     
     let reminder: Reminder
     let isSelected: Bool
-    
     let onSelect: (ReminderCellEvents) -> Void
+    
+    let delay = Delay()
+    
+    @State private var checked: Bool = false
     
     private func formatDate(_ date: Date) -> String {
         if date.isToday {
@@ -34,11 +37,21 @@ struct ReminderCellView: View {
     
     var body: some View {
         HStack {
-            Image(systemName: reminder.isCompleted ? "circle.inset.filled": "circle")
+            Image(systemName: checked ? "circle.inset.filled": "circle")
                 .font(.title2)
                 .opacity(0.4)
                 .onTapGesture {
-                    onSelect(.checkedChanged(reminder))
+                    
+                    checked.toggle()
+                    
+                    if checked {
+                        delay.performWork {
+                            onSelect(.checkedChanged(reminder))
+                        }
+                    } else {
+                        delay.cancel()
+                    }
+                    
                 }.padding(.trailing, 10)
             
             VStack(alignment: .leading) {
