@@ -13,10 +13,10 @@ struct ReminderDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    let reminder: Reminder
+    var reminder: Binding<Reminder>
     @State var editConfig: ReminderEditConfig 
     
-    init(reminder: Reminder, editConfig: ReminderEditConfig = ReminderEditConfig()) {
+    init(reminder: Binding<Reminder>, editConfig: ReminderEditConfig = ReminderEditConfig()) {
         self.reminder = reminder
         self._editConfig = State(wrappedValue: editConfig)
     }
@@ -52,6 +52,20 @@ struct ReminderDetailView: View {
                             DatePicker("Select Date", selection: $editConfig.reminderTime, displayedComponents: .hourAndMinute)
                         }
                     }
+                    
+                    Section {
+                        NavigationLink {
+                            SelectListView(selectedList: reminder.list)
+                        } label: {
+                            HStack {
+                                Text("List")
+                                Spacer()
+                                Text(reminder.wrappedValue.list!.name)
+                            }
+                        }
+
+                    }
+                    
                 }.listStyle(.insetGrouped)
                 
             }
@@ -65,7 +79,7 @@ struct ReminderDetailView: View {
                         if isFormValid {
                             // save the new reminder
                             do {
-                                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                                try ReminderService.updateReminder(reminder: reminder.wrappedValue, editConfig: editConfig)
                                 dismiss() 
                             } catch {
                                 print(error)
@@ -88,7 +102,7 @@ struct ReminderDetailView: View {
 struct ReminderDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ReminderDetailView(reminder: PreviewData.reminder, editConfig: ReminderEditConfig())
+            ReminderDetailView(reminder: .constant(PreviewData.reminder), editConfig: ReminderEditConfig())
                 .environment(\.colorScheme, .dark)
         }
     }

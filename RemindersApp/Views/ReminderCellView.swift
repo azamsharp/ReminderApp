@@ -16,6 +16,16 @@ struct ReminderCellView: View {
     let isSelected: Bool
     @Binding var showReminderDetail: Bool
     
+    private func formatDate(_ date: Date) -> String {
+        if date.isToday {
+            return "Today"
+        } else if date.isTomorrow {
+            return "Tomorrow"
+        } else {
+            return date.formatted(date: .numeric, time: .omitted)
+        }
+    }
+    
     var body: some View {
         HStack {
             Image(systemName: reminder.isCompleted ? "circle.inset.filled": "circle")
@@ -35,7 +45,7 @@ struct ReminderCellView: View {
                 
                 HStack {
                     if let reminderDate = reminder.reminderDate {
-                        Text(reminderDate.formatted(date: .numeric, time: .omitted))
+                        Text(formatDate(reminderDate))
                     }
                     
                     if let reminderTime = reminder.reminderTime {

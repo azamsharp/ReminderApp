@@ -76,7 +76,7 @@ struct ReminderListView: View {
             }
             .sheet(isPresented: $showReminderDetail, content: {
                 if let reminder = selectedReminder {
-                    ReminderDetailView(reminder: reminder, editConfig: ReminderEditConfig(reminder: reminder))
+                    ReminderDetailView(reminder: .constant(reminder), editConfig: ReminderEditConfig(reminder: reminder))
                 }
             })
             .toolbar(content: {
