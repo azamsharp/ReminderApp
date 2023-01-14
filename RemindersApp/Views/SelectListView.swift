@@ -11,7 +11,6 @@ struct SelectListView: View {
     
     @FetchRequest(sortDescriptors: [])
     private var myListsFetchResults: FetchedResults<MyList>
-    
     @Binding var selectedList: MyList?
     
     var body: some View {
@@ -20,7 +19,7 @@ struct SelectListView: View {
                 MyListCellView(myList: myList)
                     .font(.title3)
                     .onTapGesture {
-                        selectedList = myList
+                        self.selectedList = myList
                 }
                 Spacer()
                 

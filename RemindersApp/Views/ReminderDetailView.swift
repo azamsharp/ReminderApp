@@ -20,6 +20,13 @@ struct ReminderDetailView: View {
         !editConfig.title.isEmpty
     }
     
+    func bindingForReminder() -> Binding<Reminder> {
+        Binding(
+            get: { self.reminder } ,
+            set: { self.reminder = $0 }
+        )
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
