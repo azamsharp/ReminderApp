@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import UIKit 
 
+// Domain Service
 class ReminderService {
     
     static var viewContext: NSManagedObjectContext {
@@ -19,19 +20,43 @@ class ReminderService {
         try viewContext.save()
     }
     
+    // this can be moved into a separate class if necessary
+    static private func scheduleNotification(reminder: Reminder) {
+        
+        let content = UNMutableNotificationContent()
+        content.title = reminder.title ?? ""
+        content.body = reminder.notes ?? ""
+        
+        // date components
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminder.reminderDate ?? Date())
+        
+        if let reminderTime = reminder.reminderTime {
+            let reminderTimeDateComponents = reminderTime.dateComponents
+            dateComponents.hour = reminderTimeDateComponents.hour
+            dateComponents.minute = reminderTimeDateComponents.minute
+        }
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        let request = UNNotificationRequest(identifier: "Reminder Notification", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
     static func updateReminder(reminder: Reminder, editConfig: ReminderEditConfig) throws {
-        
-        // EXECUTE ANY BUSINESS RULES IF NECESSARY. CURRENTLY NO DOMAIN RULES 
-        // editConfig contains all the edited values for the reminder. These values are populated through binding of TextFields, DatePicker etc.
-        
+       
         let reminderToUpdate = reminder
         reminderToUpdate.isCompleted = editConfig.isCompleted
         reminderToUpdate.title = editConfig.title
         reminderToUpdate.notes = editConfig.notes
         reminderToUpdate.reminderDate = editConfig.hasDate ? editConfig.reminderDate: nil
-        reminderToUpdate.reminderTime = editConfig.hasTime ? editConfig.reminderTime: nil 
+        reminderToUpdate.reminderTime = editConfig.hasTime ? editConfig.reminderTime: nil
         
         try save()
+        
+        // schedule a notification
+        if editConfig.hasDate || editConfig.hasTime {
+            // schedule a notification
+            scheduleNotification(reminder: reminder)
+        }
     }
     
     static func deleteReminder(reminder: Reminder) throws {
