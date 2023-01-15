@@ -85,8 +85,6 @@ struct ReminderDetailView: View {
                                         NotificationManager.scheduleNotification(userData: userData)
                                     }
                                 }
-                                
-                                // send the notification
                                 dismiss()
                             } catch {
                                 print(error)
