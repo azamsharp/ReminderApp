@@ -77,8 +77,17 @@ struct ReminderDetailView: View {
                         if isFormValid {
                             // save the new reminder
                             do {
-                                try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
-                                dismiss() 
+                                let updated = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                                
+                                if updated {
+                                    if ReminderService.shouldSendNotificationForReminder(reminder: reminder) {
+                                        let userData = UserData(title: reminder.title, body: reminder.notes, date: reminder.reminderDate, time: reminder.reminderTime)
+                                        NotificationManager.scheduleNotification(userData: userData)
+                                    }
+                                }
+                                
+                                // send the notification
+                                dismiss()
                             } catch {
                                 print(error)
                             }

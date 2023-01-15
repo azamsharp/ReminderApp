@@ -51,7 +51,7 @@ struct ReminderListView: View {
         
         
         do {
-            try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+            let _ = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
         } catch {}
         
     }

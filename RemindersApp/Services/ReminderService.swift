@@ -20,28 +20,11 @@ class ReminderService {
         try viewContext.save()
     }
     
-    // this can be moved into a separate class if necessary
-    static private func scheduleNotification(reminder: Reminder) {
-        
-        let content = UNMutableNotificationContent()
-        content.title = reminder.title ?? ""
-        content.body = reminder.notes ?? ""
-        
-        // date components
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminder.reminderDate ?? Date())
-        
-        if let reminderTime = reminder.reminderTime {
-            let reminderTimeDateComponents = reminderTime.dateComponents
-            dateComponents.hour = reminderTimeDateComponents.hour
-            dateComponents.minute = reminderTimeDateComponents.minute
-        }
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        let request = UNNotificationRequest(identifier: "Reminder Notification", content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
+    static func shouldSendNotificationForReminder(reminder: Reminder) -> Bool {
+        reminder.reminderDate != nil || reminder.reminderTime != nil
     }
     
-    static func updateReminder(reminder: Reminder, editConfig: ReminderEditConfig) throws {
+    static func updateReminder(reminder: Reminder, editConfig: ReminderEditConfig) throws -> Bool {
        
         let reminderToUpdate = reminder
         reminderToUpdate.isCompleted = editConfig.isCompleted
@@ -51,12 +34,7 @@ class ReminderService {
         reminderToUpdate.reminderTime = editConfig.hasTime ? editConfig.reminderTime: nil
         
         try save()
-        
-        // schedule a notification
-        if editConfig.hasDate || editConfig.hasTime {
-            // schedule a notification
-            scheduleNotification(reminder: reminder)
-        }
+        return true
     }
     
     static func deleteReminder(reminder: Reminder) throws {

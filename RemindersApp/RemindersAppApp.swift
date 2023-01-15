@@ -25,6 +25,12 @@ struct RemindersAppApp: App {
         WindowGroup {
             MyListsView()
                 .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
+                .onReceive(NotificationCenter.default.publisher(for: .onReminderUpdatedWithDateOrTime)) { notification in
+                    
+                    guard let reminder = notification.object as? Reminder else { return }
+                    let userData = UserData(title: reminder.title ?? "", body: reminder.notes ?? "", date: reminder.reminderDate, time: reminder.reminderTime)
+                    NotificationManager.scheduleNotification(userData: userData)
+                }
         }
     }
 }
