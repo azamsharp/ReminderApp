@@ -11,20 +11,23 @@ import CoreData
 struct MyListsView: View {
     
     @State private var isPresented: Bool = false
+    let lists: FetchedResults<MyList>
     
+    /*
     @FetchRequest(sortDescriptors: [])
     private var myListResults: FetchedResults<MyList>
+     */
     
     var body: some View {
-        NavigationStack {
+
             VStack {
                 
-                if myListResults.isEmpty {
+                if lists.isEmpty {
                     Spacer()
                     Text("No reminders found.")
                 } else {
                     List {
-                        ForEach(myListResults) { myList in
+                        ForEach(lists) { myList in
                             NavigationLink(value: myList) {
                                 MyListCellView(myList: myList)
                                     .font(.title3)
@@ -44,7 +47,6 @@ struct MyListsView: View {
                         .font(.headline)
                 }.padding()
             }
-            .navigationTitle("MyList")
             .navigationDestination(for: MyList.self, destination: { myList in
                 ReminderListView(myList: myList)
             })
@@ -63,15 +65,16 @@ struct MyListsView: View {
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-        }
+        
         
         
     }
     
+    /*
     struct MyListsView_Previews: PreviewProvider {
         static var previews: some View {
-            MyListsView()
+            MyListsView(lists: PreviewData.myList)
                 .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
         }
-    }
+    } */
 }

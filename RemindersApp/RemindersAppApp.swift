@@ -23,7 +23,7 @@ struct RemindersAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MyListsView()
+            HomeView()
                 .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
                 .onReceive(NotificationCenter.default.publisher(for: .onReminderUpdatedWithDateOrTime)) { notification in
                     
