@@ -24,18 +24,19 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
+          //  ScrollView {
             VStack {
                 HStack {
                     
                     NavigationLink {
-                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .today))
+                        ReminderListView(request: ReminderService.remindersByStatType(statType: .today))
                             .navigationTitle("Today")
                     } label: {
                         ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
                     }
                     
                     NavigationLink {
-                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .scheduled))
+                        ReminderListView(request: ReminderService.remindersByStatType(statType: .scheduled))
                             .navigationTitle("Scheduled")
                     } label: {
                         ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
@@ -47,25 +48,25 @@ struct HomeView: View {
                 HStack {
                     NavigationLink {
                         
-                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .all))
+                        ReminderListView(request: ReminderService.remindersByStatType(statType: .all))
                             .navigationTitle("All")
-                         
+                        
                     } label: {
                         ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
                     }
                     
                     NavigationLink {
                         
-                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .completed))
-                            .navigationTitle("Completed") 
+                        ReminderListView(request: ReminderService.remindersByStatType(statType: .completed))
+                            .navigationTitle("Completed")
                     } label: {
                         ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
                     }
-
+                    
                     
                 }.frame(maxWidth: .infinity)
                     .padding([.leading, .trailing], 10)
-                  
+                
                 Spacer()
                 
                 Text("My Lists")
@@ -75,12 +76,13 @@ struct HomeView: View {
                     .padding()
                 
                 MyListsView(lists: myListResults)
-            }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
+                }
+      //  }
             
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onAppear {
-                    reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
-            }
+            
         }
     }
 }

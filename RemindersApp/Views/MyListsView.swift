@@ -48,7 +48,7 @@ struct MyListsView: View {
                 }.padding()
             }
             .navigationDestination(for: MyList.self, destination: { myList in
-                ReminderListView2(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
+                ReminderListView(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
                     .navigationTitle(myList.name)
             })
             

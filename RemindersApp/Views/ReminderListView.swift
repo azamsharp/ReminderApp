@@ -10,21 +10,21 @@ import CoreData
 
 struct ReminderListView: View {
     
-    let myList: MyList
     @State private var openAddReminder: Bool = false
     @State private var title: String = ""
     @State private var selectedReminder: Reminder?
     @State private var showReminderDetail: Bool = false
     
+    var myList: MyList?
+        
     @State var delayCall: DispatchWorkItem?
     
     @FetchRequest
     private var reminders: FetchedResults<Reminder>
     
-    init(myList: MyList) {
-        
+    init(myList: MyList? = nil, request: NSFetchRequest<Reminder>) {
         self.myList = myList
-        _reminders = FetchRequest(fetchRequest: myList.remindersByMyListRequest)
+        _reminders = FetchRequest(fetchRequest: request)
     }
     
     private var isFormValid: Bool {
@@ -47,8 +47,7 @@ struct ReminderListView: View {
     private func reminderCheckedChanged(reminder: Reminder, isCompleted: Bool) {
         
         var editConfig = ReminderEditConfig(reminder: reminder)
-        editConfig.isCompleted = !reminder.isCompleted
-        
+        editConfig.isCompleted = isCompleted
         
         do {
             let _ = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
@@ -75,8 +74,9 @@ struct ReminderListView: View {
     var body: some View {
         VStack {
             List {
+                let _ = print(reminders.count)
                 ForEach(reminders) { reminder in
-                    
+                    let _ = print(reminders)
                     ReminderCellView(reminder: reminder, isSelected: isReminderSelected(reminder)) { event in
                         switch event {
                             case .showDetail(let reminder):
@@ -94,14 +94,17 @@ struct ReminderListView: View {
             
             Spacer()
             
-            HStack {
-                Image(systemName: "plus.circle.fill")
-                Button("New Reminder") {
-                    openAddReminder = true
-                }
-            }.foregroundColor(.blue)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+            if myList != nil {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Button("New Reminder") {
+                        openAddReminder = true
+                    }
+                }.foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+            }
+            
         }
         
         .sheet(isPresented: $showReminderDetail, content: {
@@ -120,27 +123,36 @@ struct ReminderListView: View {
             Button("Cancel", role: .cancel) { }
             Button("Done") {
                 if isFormValid {
-                    do {
-                        try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: title)
-                    } catch {
-                        print(error.localizedDescription)
+                   
+                    if let myList {
+                        do {
+                            try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: title)
+                        } catch {
+                            print(error.localizedDescription)
+                        }
                     }
                 }
             }
         })
         
-        .navigationTitle(myList.name)
         .navigationBarTitleDisplayMode(.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
-struct ReminderListView_Previews: PreviewProvider {
+/*
+struct ReminderListView2_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ReminderListView(myList: PreviewData.myList)
+            ReminderListView2(myList: PreviewData.myList)
         }
     }
+} */
+
+
+
+struct Previews_ReminderListView2_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
 }
-
-

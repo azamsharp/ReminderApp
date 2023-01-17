@@ -75,15 +75,7 @@ class ReminderService {
         
         return request
     }
-    
-    /*
-     lazy var remindersByMyListRequest: NSFetchRequest<Reminder> = {
-         let request = Reminder.fetchRequest()
-         request.sortDescriptors = []
-         request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", self)
-         return request
-     }()
-     */
+   
     
     static func getRemindersByList(myList: MyList) -> NSFetchRequest<Reminder> {
         let request = Reminder.fetchRequest()

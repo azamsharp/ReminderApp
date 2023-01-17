@@ -16,12 +16,4 @@ public class MyList: NSManagedObject {
         reminders?.allObjects.compactMap { ($0 as! Reminder) } ?? []
     }
     
-    // get the reminders that are not completed
-    lazy var remindersByMyListRequest: NSFetchRequest<Reminder> = {
-        let request = Reminder.fetchRequest()
-        request.sortDescriptors = []
-        request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", self)
-        return request
-    }()
-    
 }
