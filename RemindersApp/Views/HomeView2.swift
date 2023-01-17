@@ -7,14 +7,8 @@
 
 import SwiftUI
 
-enum ReminderStatType {
-    case today
-    case all
-    case scheduled
-    case completed
-}
 
-struct HomeView: View {
+struct HomeView2: View {
     
     @FetchRequest(sortDescriptors: [])
     private var myListResults: FetchedResults<MyList>
@@ -24,7 +18,7 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            List {
             VStack {
                 HStack {
                     
@@ -76,20 +70,23 @@ struct HomeView: View {
                     .padding()
                 
                 MyListsView(lists: myListResults)
-            }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
-                        reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
-                }
-        }
+                    
+            }
+            }.listStyle(.plain)
+                .searchable(text: $search)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .onAppear {
+                            reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
+                    }
             
             
         }
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct HomeView2_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView2()
             .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
     }
 }

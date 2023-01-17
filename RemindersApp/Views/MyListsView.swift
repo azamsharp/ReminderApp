@@ -18,23 +18,25 @@ struct MyListsView: View {
     var body: some View {
         NavigationStack
         {
-            VStack {
-                
                 if lists.isEmpty {
                     Spacer()
                     Text("No reminders found.")
                 } else {
-                   
-                    List {
-                        ForEach(lists) { myList in
-                            NavigationLink(value: myList) {
-                                MyListCellView(myList: myList)
-                                    .font(.title3)
-                            }.listRowBackground(colorScheme == .dark ? Color.darkGray: Color.offWhite)
-                            
-                        }
+                    
+                    ForEach(lists) { myList in
+                        NavigationLink(value: myList) {
+                            MyListCellView(myList: myList)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .font(.title3)
+                        }.listRowBackground(colorScheme == .dark ? Color.darkGray: Color.offWhite)
+                        
                     }.searchable(text: $search)
-                    .scrollContentBackground(.hidden)
+                        .scrollContentBackground(.hidden)
+                        .navigationDestination(for: MyList.self, destination: { myList in
+                            ReminderListView(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
+                                .navigationTitle(myList.name)
+                        })
                 }
                 
                 Spacer()
@@ -46,11 +48,6 @@ struct MyListsView: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .font(.headline)
                 }.padding()
-            }
-            .navigationDestination(for: MyList.self, destination: { myList in
-                ReminderListView(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
-                    .navigationTitle(myList.name)
-            })
             
             .sheet(isPresented: $isPresented, content: {
                 NavigationView {
