@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+enum ReminderStatType {
+    case today
+    case all
+    case scheduled
+    case completed
+}
+
 struct HomeView: View {
     
     @FetchRequest(sortDescriptors: [])
@@ -19,20 +26,35 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 HStack {
-                    ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
+                    
+                    NavigationLink {
+                        ReminderStatListView(statType: .today)
+                    } label: {
+                        ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
+                    }
+                    
                     ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
                     
                 }.frame(maxWidth: .infinity)
-                    .padding(5)
-                    
+                    .padding([.leading, .trailing], 10)
                 
                 HStack {
-                    ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
-                    ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
+                    NavigationLink {
+                        ReminderStatListView(statType: .all)
+                    } label: {
+                        ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
+                    }
+                    
+                    NavigationLink {
+                        ReminderStatListView(statType: .completed)
+                    } label: {
+                        ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
+                    }
+
                     
                 }.frame(maxWidth: .infinity)
-                    .padding(5)
-                
+                    .padding([.leading, .trailing], 10)
+                  
                 Spacer()
                 
                 Text("My Lists")
@@ -42,8 +64,8 @@ struct HomeView: View {
                     .padding()
                 
                 MyListsView(lists: myListResults)
-                   
             }
+            
             .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
                     reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)

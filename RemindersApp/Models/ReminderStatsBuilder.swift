@@ -13,7 +13,6 @@ struct ReminderStatsValues {
     var scheduledCount: Int = 0
     var allCount: Int = 0
     var completedCount: Int = 0
-    
 }
 
 struct ReminderStatsBuilder {

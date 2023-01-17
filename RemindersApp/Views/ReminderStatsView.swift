@@ -35,8 +35,8 @@ struct ReminderStatsView: View {
             }.padding()
             
         }.frame(maxWidth: .infinity)
-            .background(colorScheme == .dark ? Color.statsDark: Color.statsLight)
-            .foregroundColor(colorScheme == .dark ? Color.statsLight: Color.statsDark)
+            .background(colorScheme == .dark ? Color.darkGray: Color.offWhite)
+            .foregroundColor(colorScheme == .dark ? Color.offWhite: Color.darkGray)
             .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
     }
 }

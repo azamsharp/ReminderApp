@@ -30,11 +30,10 @@ struct MyListsView: View {
                             NavigationLink(value: myList) {
                                 MyListCellView(myList: myList)
                                     .font(.title3)
-                            }.listRowBackground(colorScheme == .dark ? Color.statsDark: Color.statsLight)
+                            }.listRowBackground(colorScheme == .dark ? Color.darkGray: Color.offWhite)
                             
                         }
                     }.searchable(text: $search)
-                    //.background(.red)
                     .scrollContentBackground(.hidden)
                 }
                 

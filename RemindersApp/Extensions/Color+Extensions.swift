@@ -18,8 +18,8 @@ extension Color {
         Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(red: 27/255, green: 27/255, blue: 30/255, alpha: 1) : UIColor(red: 200, green: 200, blue: 200, alpha: 1) })
     }
     
-    public static let statsDark = Color(red: 27/255, green: 27/255, blue: 30/255)
-    public static let statsLight = Color(red: 242/255, green: 242/255, blue: 246/255)
+    public static let darkGray = Color(red: 27/255, green: 27/255, blue: 30/255) // dark gray
+    public static let offWhite = Color(red: 242/255, green: 242/255, blue: 246/255) // offwhite
 
     
 }
