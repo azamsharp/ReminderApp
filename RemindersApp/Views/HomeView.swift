@@ -40,13 +40,13 @@ struct HomeView: View {
                 
                 HStack {
                     NavigationLink {
-                        ReminderStatListView(statType: .all)
+                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .all))
                     } label: {
                         ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
                     }
                     
                     NavigationLink {
-                        ReminderStatListView(statType: .completed)
+                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .completed))
                     } label: {
                         ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
                     }

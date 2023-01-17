@@ -20,6 +20,9 @@ struct ReminderStatListView: View {
     }
     
     var body: some View {
+        
+        //ReminderListView2(request: reminders)
+        
         List(reminders) { reminder in
             Text(reminder.title ?? "")
         }
