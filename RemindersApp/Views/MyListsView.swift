@@ -12,29 +12,30 @@ struct MyListsView: View {
     
     @State private var isPresented: Bool = false
     let lists: FetchedResults<MyList>
-    
-    /*
-    @FetchRequest(sortDescriptors: [])
-    private var myListResults: FetchedResults<MyList>
-     */
+    @State private var search: String = ""
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-
+        NavigationStack
+        {
             VStack {
                 
                 if lists.isEmpty {
                     Spacer()
                     Text("No reminders found.")
                 } else {
+                   
                     List {
                         ForEach(lists) { myList in
                             NavigationLink(value: myList) {
                                 MyListCellView(myList: myList)
                                     .font(.title3)
-                            }
+                            }.listRowBackground(colorScheme == .dark ? Color.statsDark: Color.statsLight)
                             
                         }
-                    }.scrollContentBackground(.hidden)
+                    }.searchable(text: $search)
+                    //.background(.red)
+                    .scrollContentBackground(.hidden)
                 }
                 
                 Spacer()
@@ -63,18 +64,17 @@ struct MyListsView: View {
                     }
                 }
             })
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-        
+        }
         
         
     }
     
     /*
-    struct MyListsView_Previews: PreviewProvider {
-        static var previews: some View {
-            MyListsView(lists: PreviewData.myList)
-                .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
-        }
-    } */
+     struct MyListsView_Previews: PreviewProvider {
+     static var previews: some View {
+     MyListsView(lists: PreviewData.myList)
+     .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
+     }
+     } */
 }

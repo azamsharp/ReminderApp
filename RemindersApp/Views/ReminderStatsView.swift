@@ -12,13 +12,17 @@ struct ReminderStatsView: View {
     let icon: String
     let title: String
     var count: Int?
+    var iconColor: Color = .blue
+    
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
             HStack {
-                VStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 10) {
                     Image(systemName: icon)
-                        .foregroundColor(.blue)
+                        .foregroundColor(iconColor)
+                        .font(.title)
                     Text(title)
                         .opacity(0.8)
                 }
@@ -31,7 +35,8 @@ struct ReminderStatsView: View {
             }.padding()
             
         }.frame(maxWidth: .infinity)
-            .background(.secondary)
+            .background(colorScheme == .dark ? Color.statsDark: Color.statsLight)
+            .foregroundColor(colorScheme == .dark ? Color.statsLight: Color.statsDark)
             .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
     }
 }
