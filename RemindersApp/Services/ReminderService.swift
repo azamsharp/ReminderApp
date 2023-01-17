@@ -35,6 +35,7 @@ class ReminderService {
         
         try save()
         return true
+    
     }
     
     static func deleteReminder(reminder: Reminder) throws {
@@ -61,17 +62,33 @@ class ReminderService {
         
         switch statType {
             case .all:
-                request.predicate = NSPredicate(value: true)
+                request.predicate = NSPredicate(format: "isCompleted = false")
             case .today:
                 let today = Date()
                 let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)
-                request.predicate = NSPredicate(format: "reminderDate >= %@ AND reminderDate < %@", today as NSDate, tomorrow! as NSDate)
+                request.predicate = NSPredicate(format: "(reminderDate >= %@) AND (reminderDate < %@)", today as NSDate, tomorrow! as NSDate)
             case .scheduled:
-                print("scheduled")
+                request.predicate = NSPredicate(format: "(reminderDate != nil OR reminderTime != nil) AND isCompleted = false")
             case .completed:
                 request.predicate = NSPredicate(format: "isCompleted = true")
         }
         
+        return request
+    }
+    
+    /*
+     lazy var remindersByMyListRequest: NSFetchRequest<Reminder> = {
+         let request = Reminder.fetchRequest()
+         request.sortDescriptors = []
+         request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", self)
+         return request
+     }()
+     */
+    
+    static func getRemindersByList(myList: MyList) -> NSFetchRequest<Reminder> {
+        let request = Reminder.fetchRequest()
+        request.sortDescriptors = []
+        request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", myList)
         return request
     }
     

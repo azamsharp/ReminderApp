@@ -13,7 +13,7 @@ struct ReminderCellView: View {
     
     enum ReminderCellEvents {
         case select
-        case checkedChanged(Reminder)
+        case checkedChanged(Reminder, Bool)
         case showDetail(Reminder)
     }
     
@@ -22,6 +22,7 @@ struct ReminderCellView: View {
     let onSelect: (ReminderCellEvents) -> Void
     
     let delay = Delay()
+    //private var _checked: Bool = false
     
     @State private var checked: Bool = false
     
@@ -44,13 +45,14 @@ struct ReminderCellView: View {
                     
                     checked.toggle()
                     
-                    if checked {
-                        delay.performWork {
-                            onSelect(.checkedChanged(reminder))
-                        }
-                    } else {
-                        delay.cancel()
+                    // cancel the old task
+                    delay.cancel()
+                    
+                    // call the onSelect
+                    delay.performWork {
+                        onSelect(.checkedChanged(reminder, checked))
                     }
+                  
                     
                 }.padding(.trailing, 10)
             
@@ -83,6 +85,9 @@ struct ReminderCellView: View {
                     onSelect(.select)
                     //showReminderDetail = true
                 }
+        }
+        .onAppear {
+            checked = reminder.isCompleted
         }
         .contentShape(Rectangle())
         .onTapGesture {

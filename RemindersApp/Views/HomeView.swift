@@ -28,25 +28,36 @@ struct HomeView: View {
                 HStack {
                     
                     NavigationLink {
-                        ReminderStatListView(statType: .today)
+                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .today))
+                            .navigationTitle("Today")
                     } label: {
                         ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
                     }
                     
-                    ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
+                    NavigationLink {
+                        ReminderListView2(request: ReminderService.remindersByStatType(statType: .scheduled))
+                            .navigationTitle("Scheduled")
+                    } label: {
+                        ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
+                    }
                     
                 }.frame(maxWidth: .infinity)
                     .padding([.leading, .trailing], 10)
                 
                 HStack {
                     NavigationLink {
+                        
                         ReminderListView2(request: ReminderService.remindersByStatType(statType: .all))
+                            .navigationTitle("All")
+                         
                     } label: {
                         ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
                     }
                     
                     NavigationLink {
+                        
                         ReminderListView2(request: ReminderService.remindersByStatType(statType: .completed))
+                            .navigationTitle("Completed") 
                     } label: {
                         ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
                     }

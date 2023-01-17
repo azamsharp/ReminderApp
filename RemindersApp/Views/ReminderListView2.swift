@@ -15,16 +15,16 @@ struct ReminderListView2: View {
     @State private var selectedReminder: Reminder?
     @State private var showReminderDetail: Bool = false
     
-    var onReminderAdd: ((String) -> Void)?
-    
+    var myList: MyList?
+        
     @State var delayCall: DispatchWorkItem?
     
     @FetchRequest
     private var reminders: FetchedResults<Reminder>
     
-    init(request: NSFetchRequest<Reminder>, onReminderAdd: ((String) -> Void)? = nil) {
+    init(myList: MyList? = nil, request: NSFetchRequest<Reminder>) {
+        self.myList = myList
         _reminders = FetchRequest(fetchRequest: request)
-        self.onReminderAdd = onReminderAdd 
     }
     
     private var isFormValid: Bool {
@@ -44,11 +44,10 @@ struct ReminderListView2: View {
         
     }
     
-    private func reminderCheckedChanged(reminder: Reminder) {
+    private func reminderCheckedChanged(reminder: Reminder, isCompleted: Bool) {
         
         var editConfig = ReminderEditConfig(reminder: reminder)
-        editConfig.isCompleted = !reminder.isCompleted
-        
+        editConfig.isCompleted = isCompleted
         
         do {
             let _ = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
@@ -75,14 +74,15 @@ struct ReminderListView2: View {
     var body: some View {
         VStack {
             List {
+                let _ = print(reminders.count)
                 ForEach(reminders) { reminder in
-                    
+                    let _ = print(reminders)
                     ReminderCellView(reminder: reminder, isSelected: isReminderSelected(reminder)) { event in
                         switch event {
                             case .showDetail(let reminder):
                                 selectedReminder = reminder
-                            case .checkedChanged(let reminder):
-                                reminderCheckedChanged(reminder: reminder)
+                            case .checkedChanged(let reminder, let isCompleted):
+                                reminderCheckedChanged(reminder: reminder, isCompleted: isCompleted)
                             case .select:
                                 showReminderDetail = true
                         }
@@ -94,14 +94,17 @@ struct ReminderListView2: View {
             
             Spacer()
             
-            HStack {
-                Image(systemName: "plus.circle.fill")
-                Button("New Reminder") {
-                    openAddReminder = true
-                }
-            }.foregroundColor(.blue)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+            if myList != nil {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Button("New Reminder") {
+                        openAddReminder = true
+                    }
+                }.foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+            }
+            
         }
         
         .sheet(isPresented: $showReminderDetail, content: {
@@ -120,13 +123,13 @@ struct ReminderListView2: View {
             Button("Cancel", role: .cancel) { }
             Button("Done") {
                 if isFormValid {
-                    do {
-                        if let onReminderAdd {
-                            onReminderAdd(title)
+                   
+                    if let myList {
+                        do {
+                            try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: title)
+                        } catch {
+                            print(error.localizedDescription)
                         }
-                       // try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: title)
-                    } catch {
-                        print(error.localizedDescription)
                     }
                 }
             }
@@ -147,3 +150,9 @@ struct ReminderListView2_Previews: PreviewProvider {
 } */
 
 
+
+struct Previews_ReminderListView2_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
+}

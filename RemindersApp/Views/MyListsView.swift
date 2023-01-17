@@ -15,8 +15,6 @@ struct MyListsView: View {
     @State private var search: String = ""
     @Environment(\.colorScheme) var colorScheme
     
-    
-    
     var body: some View {
         NavigationStack
         {
@@ -50,14 +48,7 @@ struct MyListsView: View {
                 }.padding()
             }
             .navigationDestination(for: MyList.self, destination: { myList in
-                ReminderListView2(request: myList.remindersByMyListRequest, onReminderAdd: { reminderTitle in
-                    do {
-                        print(reminderTitle)
-                        try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: reminderTitle)
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                })
+                ReminderListView2(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
                     .navigationTitle(myList.name)
             })
             
@@ -65,7 +56,6 @@ struct MyListsView: View {
                 NavigationView {
                     AddNewListView { name, color in
                         do {
-                            
                             try ReminderService.saveMyList(name, color)
                         } catch  {
                             print(error.localizedDescription)
