@@ -15,69 +15,91 @@ struct HomeView2: View {
     private var reminderStatsBuilder = ReminderStatsBuilder()
     @State private var reminderStatsValues = ReminderStatsValues()
     @State private var search: String = ""
+    @State private var isPresented: Bool = false
     
     var body: some View {
         NavigationStack {
-            List {
             VStack {
-                HStack {
-                    
-                    NavigationLink {
-                        ReminderListView(request: ReminderService.remindersByStatType(statType: .today))
-                            .navigationTitle("Today")
-                    } label: {
-                        ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
-                    }
-                    
-                    NavigationLink {
-                        ReminderListView(request: ReminderService.remindersByStatType(statType: .scheduled))
-                            .navigationTitle("Scheduled")
-                    } label: {
-                        ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
-                    }
-                    
-                }.frame(maxWidth: .infinity)
-                    .padding([.leading, .trailing], 10)
-                
-                HStack {
-                    NavigationLink {
+                ScrollView {
+                    HStack {
                         
-                        ReminderListView(request: ReminderService.remindersByStatType(statType: .all))
-                            .navigationTitle("All")
+                        NavigationLink {
+                            ReminderListView(request: ReminderService.remindersByStatType(statType: .today))
+                                .navigationTitle("Today")
+                        } label: {
+                            ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
+                        }
                         
-                    } label: {
-                        ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
-                    }
-                    
-                    NavigationLink {
+                        NavigationLink {
+                            ReminderListView(request: ReminderService.remindersByStatType(statType: .scheduled))
+                                .navigationTitle("Scheduled")
+                        } label: {
+                            ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
+                        }
                         
-                        ReminderListView(request: ReminderService.remindersByStatType(statType: .completed))
-                            .navigationTitle("Completed")
-                    } label: {
-                        ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
-                    }
+                    }.frame(maxWidth: .infinity)
+                        .padding([.leading, .trailing], 10)
                     
+                    HStack {
+                        NavigationLink {
+                            
+                            ReminderListView(request: ReminderService.remindersByStatType(statType: .all))
+                                .navigationTitle("All")
+                            
+                        } label: {
+                            ReminderStatsView(icon: "tray.circle.fill", title: "All", count: reminderStatsValues.allCount, iconColor: .secondary)
+                        }
+                        
+                        NavigationLink {
+                            
+                            ReminderListView(request: ReminderService.remindersByStatType(statType: .completed))
+                                .navigationTitle("Completed")
+                        } label: {
+                            ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
+                        }
+                        
+                        
+                    }.frame(maxWidth: .infinity)
+                        .padding([.leading, .trailing], 10)
                     
-                }.frame(maxWidth: .infinity)
-                    .padding([.leading, .trailing], 10)
-                
-                Spacer()
-                
-                Text("My Lists")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding()
-                
-                MyListsView(lists: myListResults)
+                    Spacer()
                     
+                    Text("My Lists")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.largeTitle)
+                        .bold()
+                        .padding()
+                    
+                    MyListsView(lists: myListResults)
+                    
+                }
+                
+                Button {
+                    isPresented = true
+                } label: {
+                    Text("Add List")
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .font(.headline)
+                }.padding()
+                
             }
-            }.listStyle(.plain)
+            .sheet(isPresented: $isPresented, content: {
+                NavigationView {
+                    AddNewListView { name, color in
+                        do {
+                            try ReminderService.saveMyList(name, color)
+                        } catch  {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+            })
+            .listStyle(.plain)
                 .searchable(text: $search)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .onAppear {
-                            reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
-                    }
+                .onAppear {
+                    reminderStatsValues = reminderStatsBuilder.build(myListResults: myListResults)
+                }
             
             
         }

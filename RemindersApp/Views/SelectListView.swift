@@ -16,11 +16,25 @@ struct SelectListView: View {
     var body: some View {
         List(myListsFetchResults) { myList in
             HStack {
+                
+                HStack {
+                    Image(systemName: "line.3.horizontal.circle.fill")
+                        .foregroundColor(Color(myList.color))
+                    Text(myList.name)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    self.selectedList = myList
+                }
+                   
+                
+                /*
                 MyListCellView(myList: myList)
                     .font(.title3)
                     .onTapGesture {
                         self.selectedList = myList
-                }
+                } */
                 Spacer()
                 
                 if selectedList == myList {

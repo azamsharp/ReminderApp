@@ -25,10 +25,15 @@ struct MyListsView: View {
                     
                     ForEach(lists) { myList in
                         NavigationLink(value: myList) {
-                            MyListCellView(myList: myList)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
-                                .font(.title3)
+                            VStack {
+                                MyListCellView(myList: myList)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding([.leading], 10)
+                                    .font(.title3)
+                                    .foregroundColor(colorScheme == .dark ? Color.offWhite: Color.darkGray)
+                                Divider()
+                            }
+                           
                         }.listRowBackground(colorScheme == .dark ? Color.darkGray: Color.offWhite)
                         
                     }.searchable(text: $search)
@@ -40,27 +45,7 @@ struct MyListsView: View {
                 }
                 
                 Spacer()
-                
-                Button {
-                    isPresented = true
-                } label: {
-                    Text("Add List")
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .font(.headline)
-                }.padding()
-            
-            .sheet(isPresented: $isPresented, content: {
-                NavigationView {
-                    AddNewListView { name, color in
-                        do {
-                            try ReminderService.saveMyList(name, color)
-                        } catch  {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
-            })
-            
+        
         }
         
         
