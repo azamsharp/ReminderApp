@@ -74,9 +74,8 @@ struct ReminderListView: View {
     var body: some View {
         VStack {
             List {
-                let _ = print(reminders.count)
+                
                 ForEach(reminders) { reminder in
-                    let _ = print(reminders)
                     ReminderCellView(reminder: reminder, isSelected: isReminderSelected(reminder)) { event in
                         switch event {
                             case .showDetail(let reminder):

@@ -23,6 +23,7 @@ struct ReminderDetailView: View {
     var body: some View {
         NavigationView {
             VStack {
+                    
                 List {
                     Section {
                         TextField("Title", text: $editConfig.title) // Changing the config 
@@ -35,7 +36,8 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasDate {
-                            DatePicker("Select Date", selection: $editConfig.reminderDate, displayedComponents: .date)
+
+                            DatePicker("Select Date", selection: $editConfig.reminderDate ?? Date(), displayedComponents: .date)
                         }
                         
                         Toggle(isOn: $editConfig.hasTime) {
@@ -44,7 +46,7 @@ struct ReminderDetailView: View {
                         }
                         
                         if editConfig.hasTime {
-                            DatePicker("Select Date", selection: $editConfig.reminderTime, displayedComponents: .hourAndMinute)
+                            DatePicker("Select Date", selection: $editConfig.reminderTime ?? Date(), displayedComponents: .hourAndMinute)
                         }
                     }
                     
@@ -75,6 +77,7 @@ struct ReminderDetailView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
                         if isFormValid {
+                             
                             // save the new reminder
                             do {
                                 let updated = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)

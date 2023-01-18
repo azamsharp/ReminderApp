@@ -13,8 +13,8 @@ struct ReminderEditConfig {
     var isCompleted: Bool = false
     var hasDate: Bool = false
     var hasTime: Bool = false
-    var reminderDate: Date = Date()
-    var reminderTime: Date = Date()
+    var reminderDate: Date?
+    var reminderTime: Date?
     
     init() { }
     
