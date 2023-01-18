@@ -11,7 +11,7 @@ class Delay {
     
     private var seconds: Double
     
-    init(_ seconds: Double = 2) {
+    init(_ seconds: Double = 1.0) {
         self.seconds = seconds
     }
     

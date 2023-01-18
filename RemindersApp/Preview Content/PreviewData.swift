@@ -16,6 +16,11 @@ class PreviewData {
         return (try? viewContext.fetch(request).first) ?? Reminder(context: viewContext) 
     }
     
+    static var allMyLists: NSFetchRequest<MyList> {
+        let request = MyList.fetchRequest()
+        return request 
+    }
+    
     static var myList: MyList {
         let viewContext = CoreDataProvider.shared.viewContext
         let request = MyList.fetchRequest()

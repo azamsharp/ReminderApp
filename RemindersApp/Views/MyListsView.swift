@@ -11,19 +11,19 @@ import CoreData
 struct MyListsView: View {
     
     @State private var isPresented: Bool = false
-    let lists: FetchedResults<MyList>
-    @State private var search: String = ""
     @Environment(\.colorScheme) var colorScheme
+    
+    let myLists: FetchedResults<MyList>
     
     var body: some View {
         NavigationStack
         {
-                if lists.isEmpty {
+                if myLists.isEmpty {
                     Spacer()
                     Text("No reminders found.")
                 } else {
                     
-                    ForEach(lists) { myList in
+                    ForEach(myLists) { myList in
                         NavigationLink(value: myList) {
                             VStack {
                                 MyListCellView(myList: myList)
@@ -36,7 +36,8 @@ struct MyListsView: View {
                            
                         }.listRowBackground(colorScheme == .dark ? Color.darkGray: Color.offWhite)
                         
-                    }.searchable(text: $search)
+                    }
+
                         .scrollContentBackground(.hidden)
                         .navigationDestination(for: MyList.self, destination: { myList in
                             ReminderListView(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
@@ -45,17 +46,22 @@ struct MyListsView: View {
                 }
                 
                 Spacer()
-        
         }
-        
-        
     }
     
     /*
-     struct MyListsView_Previews: PreviewProvider {
-     static var previews: some View {
-     MyListsView(lists: PreviewData.myList)
-     .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
-     }
-     } */
+    struct MyListsView_Previews: PreviewProvider {
+        
+        static var previews: some View {
+            
+            let request = MyList.fetchRequest()
+            request.sortDescriptors = []
+            let myLists = try! request.execute()
+            
+            return MyListsView(myListResults: FetchedResults(myLists))
+                .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
+        }
+    } */
+    
+    
 }

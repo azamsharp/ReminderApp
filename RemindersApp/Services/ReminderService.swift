@@ -30,8 +30,8 @@ class ReminderService {
         reminderToUpdate.isCompleted = editConfig.isCompleted
         reminderToUpdate.title = editConfig.title
         reminderToUpdate.notes = editConfig.notes
-        reminderToUpdate.reminderDate = editConfig.reminderDate
-        reminderToUpdate.reminderTime = editConfig.reminderTime
+        reminderToUpdate.reminderDate = editConfig.hasDate ? editConfig.reminderDate: nil
+        reminderToUpdate.reminderTime = editConfig.hasTime ? editConfig.reminderTime: nil
         
         try save()
         return true
@@ -76,6 +76,18 @@ class ReminderService {
         return request
     }
    
+    static func getMyLists() -> NSFetchRequest<MyList> {
+        let request = MyList.fetchRequest()
+        request.sortDescriptors = []
+        return request
+    }
+    
+    static func getRemindersBySearchTerm(_ searchTerm: String) -> NSFetchRequest<Reminder> {
+        let request = Reminder.fetchRequest()
+        request.sortDescriptors = []
+        request.predicate = NSPredicate(format: "title CONTAINS %@", searchTerm)
+        return request
+    }
     
     static func getRemindersByList(myList: MyList) -> NSFetchRequest<Reminder> {
         let request = Reminder.fetchRequest()

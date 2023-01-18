@@ -80,6 +80,7 @@ struct ReminderDetailView: View {
                              
                             // save the new reminder
                             do {
+                                
                                 let updated = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
                                 
                                 if updated {
