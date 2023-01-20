@@ -19,11 +19,27 @@ struct HomeView: View {
     @FetchRequest(sortDescriptors: [])
     private var myListResults: FetchedResults<MyList>
     
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .today))
+    private var todayResults: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .scheduled))
+    private var scheduledResults: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .all))
+    private var allResults: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .completed))
+    private var completedResults: FetchedResults<Reminder>
+    
+    @FetchRequest(sortDescriptors: [])
+    private var searchResults: FetchedResults<Reminder>
+    
     private var reminderStatsBuilder = ReminderStatsBuilder()
     @State private var reminderStatsValues = ReminderStatsValues()
     @State private var search: String = ""
     @State private var isPresented: Bool = false
     @State private var searching: Bool = false
+    
     
     var body: some View {
         NavigationStack {
@@ -32,15 +48,14 @@ struct HomeView: View {
                     HStack {
                         
                         NavigationLink {
-                            ReminderListView(request: ReminderService.remindersByStatType(statType: .today))
-                                .navigationTitle("Today")
+                            ReminderListView(reminders: todayResults)
                         } label: {
                             ReminderStatsView(icon: Constants1.Icons.calendar.rawValue, title: "Today", count: reminderStatsValues.todaysCount)
                         }
                         
                         NavigationLink {
-                            ReminderListView(request: ReminderService.remindersByStatType(statType: .scheduled))
-                                .navigationTitle("Scheduled")
+                            
+                            ReminderListView(reminders: scheduledResults)
                         } label: {
                             ReminderStatsView(icon: "calendar.circle.fill", title: "Scheduled", count: reminderStatsValues.scheduledCount, iconColor: .red)
                         }
@@ -51,7 +66,7 @@ struct HomeView: View {
                     HStack {
                         NavigationLink {
                             
-                            ReminderListView(request: ReminderService.remindersByStatType(statType: .all))
+                            ReminderListView(reminders: allResults)
                                 .navigationTitle("All")
                             
                         } label: {
@@ -59,9 +74,7 @@ struct HomeView: View {
                         }
                         
                         NavigationLink {
-                            
-                            ReminderListView(request: ReminderService.remindersByStatType(statType: .completed))
-                                .navigationTitle("Completed")
+                            ReminderListView(reminders: completedResults)
                         } label: {
                             ReminderStatsView(icon: "checkmark.circle.fill", title: "Completed", count: reminderStatsValues.completedCount, iconColor: .primary)
                         }
@@ -101,9 +114,10 @@ struct HomeView: View {
             .listStyle(.plain)
             .onChange(of: search, perform: { searchTerm in
                 searching = !searchTerm.isEmpty ? true: false
+                searchResults.nsPredicate = ReminderService.getRemindersBySearchTerm(search).predicate
             })
             .overlay(alignment: .center, content: {
-                ReminderListView(request: ReminderService.getRemindersBySearchTerm(search))
+                ReminderListView(reminders: searchResults)
                     .opacity(searching ? 1.0: 0.0)
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -10,27 +10,13 @@ import CoreData
 
 struct ReminderListView: View {
     
-    @State private var openAddReminder: Bool = false
-    @State private var title: String = ""
     @State private var selectedReminder: Reminder?
     @State private var showReminderDetail: Bool = false
     
-    var myList: MyList?
+    let reminders: FetchedResults<Reminder>
         
     @State var delayCall: DispatchWorkItem?
-    
-    @FetchRequest
-    private var reminders: FetchedResults<Reminder>
-    
-    init(myList: MyList? = nil, request: NSFetchRequest<Reminder>) {
-        self.myList = myList
-        _reminders = FetchRequest(fetchRequest: request)
-    }
-    
-    private var isFormValid: Bool {
-        !title.isEmpty
-    }
-    
+        
     private func delayCall(delay: Double, completion: @escaping () -> ()) {
         
         // cancel any existing call
@@ -57,6 +43,7 @@ struct ReminderListView: View {
     
     
     private func deleteReminder(_ indexSet: IndexSet) {
+        
         indexSet.forEach { index in
             let reminder = reminders[index]
             do {
@@ -93,19 +80,7 @@ struct ReminderListView: View {
             
             Spacer()
             
-            if myList != nil {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Button("New Reminder") {
-                        openAddReminder = true
-                    }
-                }.foregroundColor(.blue)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-            }
-            
         }
-        
         .sheet(isPresented: $showReminderDetail, content: {
             ReminderDetailView(reminder: Binding($selectedReminder)!)
         })
@@ -117,37 +92,11 @@ struct ReminderListView: View {
                 }.opacity(selectedReminder != nil ? 1.0: 0.0)
             }
         })
-        .alert("New Reminder", isPresented: $openAddReminder, actions: {
-            TextField("", text: $title)
-            Button("Cancel", role: .cancel) { }
-            Button("Done") {
-                if isFormValid {
-                   
-                    if let myList {
-                        do {
-                            try ReminderService.saveReminderToMyList(myList: myList, reminderTitle: title)
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
-            }
-        })
         
         .navigationBarTitleDisplayMode(.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
-
-/*
-struct ReminderListView2_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ReminderListView2(myList: PreviewData.myList)
-        }
-    }
-} */
-
 
 
 struct Previews_ReminderListView2_Previews: PreviewProvider {

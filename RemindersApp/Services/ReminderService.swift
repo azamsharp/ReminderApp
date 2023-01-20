@@ -76,6 +76,8 @@ class ReminderService {
         return request
     }
    
+    // ReminderService.swift
+    
     static func getMyLists() -> NSFetchRequest<MyList> {
         let request = MyList.fetchRequest()
         request.sortDescriptors = []

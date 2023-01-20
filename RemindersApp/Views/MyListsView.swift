@@ -40,8 +40,12 @@ struct MyListsView: View {
 
                         .scrollContentBackground(.hidden)
                         .navigationDestination(for: MyList.self, destination: { myList in
-                            ReminderListView(myList: myList, request: ReminderService.getRemindersByList(myList: myList))
-                                .navigationTitle(myList.name)
+                            
+                            MyListDetailView(myList: myList)
+                                .navigationBarTitle(myList.name)
+                            /*
+                            ReminderListView(myList: myList) */
+                               // .navigationTitle(myList.name)
                         })
                 }
                 
