@@ -23,7 +23,6 @@ struct HomeView: View {
     @State private var reminderStatsValues = ReminderStatsValues()
     @State private var search: String = ""
     @State private var isPresented: Bool = false
-    
     @State private var searching: Bool = false
     
     var body: some View {
@@ -36,7 +35,7 @@ struct HomeView: View {
                             ReminderListView(request: ReminderService.remindersByStatType(statType: .today))
                                 .navigationTitle("Today")
                         } label: {
-                            ReminderStatsView(icon: "calendar", title: "Today", count: reminderStatsValues.todaysCount)
+                            ReminderStatsView(icon: Constants1.Icons.calendar.rawValue, title: "Today", count: reminderStatsValues.todaysCount)
                         }
                         
                         NavigationLink {

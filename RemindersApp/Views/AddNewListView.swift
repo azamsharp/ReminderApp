@@ -27,7 +27,6 @@ struct AddNewListView: View {
                         .foregroundColor(selectedColor)
                         .font(.system(size: 100))
                     TextField("List Name", text: $name)
-                       // .background(Color.primaryBackground)
                         .multilineTextAlignment(.center)
                         .textFieldStyle(.roundedBorder)
                 }

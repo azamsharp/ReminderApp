@@ -29,6 +29,7 @@
 		8D3FEEA829718F87001AE138 /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3FEEA729718F87001AE138 /* CustomOperators.swift */; };
 		8D3FEEAA29719BB7001AE138 /* ReminderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3FEEA929719BB7001AE138 /* ReminderCellView.swift */; };
 		8D42CC1B2977503300F316A4 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D42CC1A2977503300F316A4 /* HomeView.swift */; };
+		8D42CC452979796100F316A4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D42CC442979796100F316A4 /* Constants.swift */; };
 		8DA26F6B296BBA2F007DE5DC /* AddNewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA26F6A296BBA2F007DE5DC /* AddNewListView.swift */; };
 		8DD166EF296BAD99004FE59C /* RemindersAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD166EE296BAD99004FE59C /* RemindersAppApp.swift */; };
 		8DD166F1296BAD99004FE59C /* MyListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD166F0296BAD99004FE59C /* MyListsView.swift */; };
@@ -63,6 +64,7 @@
 		8D3FEEA729718F87001AE138 /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
 		8D3FEEA929719BB7001AE138 /* ReminderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellView.swift; sourceTree = "<group>"; };
 		8D42CC1A2977503300F316A4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		8D42CC442979796100F316A4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8DA26F6A296BBA2F007DE5DC /* AddNewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewListView.swift; sourceTree = "<group>"; };
 		8DD166EB296BAD99004FE59C /* RemindersApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RemindersApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD166EE296BAD99004FE59C /* RemindersAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersAppApp.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				8D3FEEA729718F87001AE138 /* CustomOperators.swift */,
 				8D0B694F29730B170019C4F4 /* Delay.swift */,
+				8D42CC442979796100F316A4 /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				8D0B69992976263A0019C4F4 /* ShapeStyle+Extensions.swift in Sources */,
 				8D39FB0D296C8E9C00A0CA34 /* MyList+CoreDataProperties.swift in Sources */,
 				8DD166F1296BAD99004FE59C /* MyListsView.swift in Sources */,
+				8D42CC452979796100F316A4 /* Constants.swift in Sources */,
 				8DD910F9296CA1EB00686F1A /* PreviewData.swift in Sources */,
 				8D0B699B2976EA0E0019C4F4 /* ReminderStatListView.swift in Sources */,
 				8D42CC1B2977503300F316A4 /* HomeView.swift in Sources */,
