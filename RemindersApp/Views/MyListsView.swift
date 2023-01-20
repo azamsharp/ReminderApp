@@ -43,9 +43,6 @@ struct MyListsView: View {
                             
                             MyListDetailView(myList: myList)
                                 .navigationBarTitle(myList.name)
-                            /*
-                            ReminderListView(myList: myList) */
-                               // .navigationTitle(myList.name)
                         })
                 }
                 

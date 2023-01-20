@@ -18,7 +18,7 @@ struct HomeView: View {
     
     @FetchRequest(sortDescriptors: [])
     private var myListResults: FetchedResults<MyList>
-    
+        
     @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .today))
     private var todayResults: FetchedResults<Reminder>
     
